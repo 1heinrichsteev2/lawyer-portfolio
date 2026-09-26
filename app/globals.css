@@ -1,0 +1,384 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #0a0a0a;
+  --color-carbon: #111111;
+  --color-graphite: #171717;
+  --color-ash: #232220;
+  --color-ivory: #ede7da;
+  --color-stone: #9c978c;
+  --color-champagne: #c8a45d;
+  --color-champagne-soft: #d6b56a;
+  --color-champagne-pale: #e0c27a;
+
+  --font-display: var(--font-instrument), 'Times New Roman', serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --breakpoint-xs: 22rem;
+}
+
+:root {
+  --margin-rule: clamp(1.25rem, 5vw, 5.5rem);
+  --glass-bg: linear-gradient(155deg, rgb(237 231 218 / 0.075), rgb(237 231 218 / 0.018) 45%, rgb(200 164 93 / 0.03));
+  --glass-border: rgb(237 231 218 / 0.12);
+  --glass-edge: rgb(224 194 122 / 0.35);
+  color-scheme: dark;
+}
+
+html {
+  background: var(--color-ink);
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-ivory);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection {
+  background: rgb(200 164 93 / 0.35);
+  color: #fff;
+}
+
+/* Focus: always visible for keyboard users */
+:focus-visible {
+  outline: 1.5px solid var(--color-champagne-pale);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@layer components {
+/* ---------- Typography ---------- */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 0.98;
+}
+.display-xl {
+  font-size: clamp(2.9rem, 7.2vw, 7.5rem);
+}
+.display-lg {
+  font-size: clamp(2.4rem, 5.2vw, 5.25rem);
+}
+.display-md {
+  font-size: clamp(1.9rem, 3.4vw, 3.25rem);
+  line-height: 1.04;
+}
+.display-sm {
+  font-size: clamp(1.45rem, 2.2vw, 2rem);
+  line-height: 1.12;
+}
+.lede {
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+  line-height: 1.65;
+  color: rgb(237 231 218 / 0.78);
+  max-width: 38rem;
+}
+.prose-legal p {
+  color: rgb(237 231 218 / 0.8);
+  max-width: 42rem;
+}
+.prose-legal p + p {
+  margin-top: 1.1rem;
+}
+.label {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--color-stone);
+}
+.label-rule {
+  display: inline-flex;
+  align-items: center;
+}
+.label-rule::before {
+  content: '';
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1px;
+  background: var(--color-champagne);
+  opacity: 0.8;
+}
+
+/* ---------- Layout ---------- */
+.shell {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--margin-rule);
+}
+
+/* The "pleading margin" — a thin vertical rule borrowed from legal drafts */
+.margin-rule {
+  position: relative;
+}
+.margin-rule::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--margin-rule) * 0.5);
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgb(200 164 93 / 0.22) 12%, rgb(200 164 93 / 0.22) 88%, transparent);
+  pointer-events: none;
+}
+@media (max-width: 767px) {
+  .margin-rule::before {
+    left: 0.6rem;
+  }
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, rgb(237 231 218 / 0.14), rgb(237 231 218 / 0.04));
+}
+
+/* ---------- Glass ---------- */
+.glass {
+  position: relative;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.07),
+    inset 0 -1px 0 rgb(0 0 0 / 0.25),
+    0 30px 60px -30px rgb(0 0 0 / 0.7);
+}
+.glass::after {
+  /* soft internal highlight */
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgb(255 255 255 / 0.08) 0%, transparent 28%, transparent 70%, rgb(224 194 122 / 0.05) 100%);
+}
+.glass-edge {
+  /* thin gold edge light along the top */
+  position: absolute;
+  inset: 0 12% auto 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-edge), transparent);
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .glass {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* The arch — signature shape */
+.arch {
+  border-radius: 999px 999px 18px 18px;
+}
+.arch-soft {
+  border-radius: 48% 48% 14px 14px / 30% 30% 14px 14px;
+}
+
+/* ---------- Atmosphere ---------- */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 40%, transparent 55%, rgb(0 0 0 / 0.55) 100%);
+}
+
+/* ---------- Links & buttons ---------- */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.45s var(--ease-out-quint), color 0.3s ease;
+}
+.link-underline:hover,
+.link-underline[aria-current='page'] {
+  background-size: 100% 1px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 2000;
+  padding: 0.6rem 1rem;
+  background: var(--color-ivory);
+  color: var(--color-ink);
+  border-radius: 6px;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+}
+
+/* ---------- Motion safety ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .blur-text span {
+    filter: none !important;
+  }
+}
+
+/* ---------- Hero artwork (CSS-only entrance: always starts visible) ---------- */
+.hero-frame {
+  /* mobile: portrait crop on the advocate; real height before the image loads */
+  aspect-ratio: 4 / 5;
+  max-height: 78svh;
+}
+@media (min-width: 560px) and (max-width: 767px) {
+  .hero-frame {
+    aspect-ratio: 4 / 3;
+  }
+}
+@media (min-width: 768px) {
+  .hero-frame {
+    aspect-ratio: 2048 / 682;
+    max-height: none;
+  }
+}
+.hero-img {
+  object-position: var(--hero-focus, 19%) 30%;
+}
+@media (min-width: 768px) {
+  .hero-img {
+    object-position: center;
+  }
+}
+.hero-settle {
+  animation: hero-settle 1.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: 30% 40%;
+}
+@keyframes hero-settle {
+  from {
+    transform: scale(1.05);
+    filter: saturate(0.85) brightness(0.94);
+  }
+  to {
+    transform: scale(1);
+    filter: none;
+  }
+}
+.hero-sweep {
+  background: linear-gradient(100deg, transparent 0%, rgb(224 194 122 / 0.22) 45%, rgb(255 255 255 / 0.18) 50%, transparent 60%);
+  transform: translateX(-120%);
+  animation: hero-sweep 2.4s ease-in-out 0.4s forwards;
+}
+@keyframes hero-sweep {
+  to {
+    transform: translateX(420%);
+  }
+}
+.hero-rise {
+  animation: hero-rise 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes hero-rise {
+  from {
+    opacity: 0.001;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.hero-track {
+  animation: hero-track 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+}
+@keyframes hero-track {
+  from {
+    letter-spacing: 0.34em;
+    filter: blur(4px);
+  }
+  to {
+    letter-spacing: 0.2em;
+    filter: blur(0);
+  }
+}
+
+/* ---------- Page entrance: CSS, so content is never left hidden if JS is slow ---------- */
+.page-enter {
+  animation: page-enter 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes page-enter {
+  from {
+    opacity: 0.4;
+    transform: translateY(12px);
+  }
+}
+
+/* ---------- Intro loader: CSS-only, timed from first paint ---------- */
+.site-loader {
+  display: none !important;
+}
+html[data-intro='play'] .site-loader {
+  display: flex !important;
+  animation: loader-exit 0.6s cubic-bezier(0.76, 0, 0.24, 1) 0.65s forwards;
+}
+.loader-inner {
+  animation: loader-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.loader-bar {
+  transform: scaleX(0);
+  animation: loader-bar 0.6s cubic-bezier(0.65, 0, 0.35, 1) 0.05s forwards;
+}
+@keyframes loader-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes loader-bar {
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes loader-exit {
+  to {
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
